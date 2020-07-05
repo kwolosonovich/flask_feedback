@@ -14,10 +14,16 @@ def connect_db(app):
 class User(db.Model):
     '''Flutter user.'''
 
-# Notes:
+    __tablename__ = "users"
 
-# username - a unique primary key that is no longer than 20 characters.
-# password - a not-nullable column that is text
-# email - a not-nullable column that is unique and no longer than 50 characters.
-# first_name - a not-nullable column that is no longer than 30 characters.
-# last_name - a not-nullable column that is no longer than 30 characters.
+    username = db.Column(db.String(30),
+                   primary_key=True)
+    password = db.Column(db.String,
+                         default=False)
+    email = db.Column(db.String(50),
+                      nullable=False,
+                      unique=True)
+    first_name = db.Column(db.String(30),
+                           nullable=False)
+    last_name = db.Column(db.String(30),
+                           nullable=False)
