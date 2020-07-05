@@ -16,7 +16,9 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    username = db.Column(db.String(30),
+    default_image_url = "https://upload-icon.s3.us-east-2.amazonaws.com/uploads/icons/png/16671574911586787867-512.png"
+
+    username = db.Column(db.String(20),
                    primary_key=True)
     password = db.Column(db.String,
                          default=False)
@@ -27,3 +29,6 @@ class User(db.Model):
                            nullable=False)
     last_name = db.Column(db.String(30),
                            nullable=False)
+    profile_photo = db.Column(db.String,
+                              nullable=False,
+                              default=default_image_url)
