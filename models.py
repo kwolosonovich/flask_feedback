@@ -11,12 +11,13 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
+
 class User(db.Model):
     '''Flutter user.'''
 
-    __tablename__ = "users"
+    default_image_url = "https://image.flaticon.com/icons/svg/184/184970.svg"
 
-    default_image_url = "https://upload-icon.s3.us-east-2.amazonaws.com/uploads/icons/png/16671574911586787867-512.png"
+    __tablename__ = "users"
 
     username = db.Column(db.String(20),
                    primary_key=True)
@@ -30,8 +31,7 @@ class User(db.Model):
     last_name = db.Column(db.String(30),
                            nullable=False)
     profile_photo = db.Column(db.String,
-                              nullable=False,
-                              default=default_image_url)
+                              nullable=False)
 
     @classmethod
     def create_account(cls, username, password, email, first_name, last_name, profile_photo):
@@ -59,7 +59,12 @@ class User(db.Model):
         else:
             return False
 
-class Feedback(db.Model)
+    @classmethod
+    def user_info(clsc, username):
+        user = User.query.filter_by(username=username)
+        return user
+
+class Feedback(db.Model):
 
     __tablename__ = "feedback"
 
@@ -73,3 +78,8 @@ class Feedback(db.Model)
     username = db.Column(db.String,
                          db.ForeignKey('users.username'),
                          nullable=False)
+
+    @classmethod
+    def user_feedback(cls, username):
+        feedback = Feedback.query.filter_by(username=username)
+        return feedback

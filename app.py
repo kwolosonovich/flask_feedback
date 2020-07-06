@@ -1,7 +1,8 @@
 from flask import Flask, render_template, redirect, session, flash, request
-from models import db, connect_db, User
+from models import db, connect_db, User, Feedback
 from forms import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
+from seed import seed_database
 
 app = Flask(__name__)
 
@@ -12,8 +13,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///flutter"
 
 
 connect_db(app)
-db.drop_all()
-db.create_all()
+
+seed_database()
 
 @app.route("/")
 def welcome_page():
@@ -36,10 +37,11 @@ def user_content(username):
     else:
         try:
             if username == session['current_user']:
-                print(username)
-                print(session['current_user'])
-                print('valid')
-                return render_template('content.html')
+                feedback = Feedback.user_feedback(username)
+                user = User.user_info(username)
+                return render_template('content.html', feedback=feedback, user=user)
+
+
         except KeyError as e:
             print('KeyError')
             # return redirect(f"/users/{session['current_user']}")
@@ -65,8 +67,15 @@ def register():
             first_name = form.first_name.data
             last_name = form.last_name.data
             profile_photo = form.profile_photo.data
+            if len(profile_photo) == 0 or profile_photo is None:
+                profile_photo = User.default_image_url
 
-            new_user = User.create_account(username, password, email, first_name, last_name, profile_photo)
+            new_user = User.create_account(username=username,
+                                           password=password,
+                                           email=email,
+                                           first_name=first_name,
+                                           last_name=last_name,
+                                           profile_photo=profile_photo)
 
             db.session.add(new_user)
             db.session.commit()

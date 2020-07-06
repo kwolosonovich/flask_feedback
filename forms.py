@@ -20,7 +20,7 @@ class RegisterForm(FlaskForm):
     email = StringField("Email", validators=[required, email_validator])
     first_name = StringField("First Name", validators=[required, len_30])
     last_name = StringField("Last Name", validators=[required, len_30])
-    profile_photo = StringField('Profile Photo', validators=[url_validator, optional])
+    profile_photo = StringField('Profile Photo', validators=[optional, url_validator])
 
 class LoginForm(FlaskForm):
     '''Returning user login form.'''
