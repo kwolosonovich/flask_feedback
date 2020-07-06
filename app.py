@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///flutter"
 
 
 connect_db(app)
+db.drop_all()
 db.create_all()
 
 @app.route("/")
@@ -26,9 +27,35 @@ def welcome_page():
 
 @app.route("/users/<username>")
 def user_content(username):
+    if request.method == "GET":
+        return redirect("/")
     '''Render content for current user'''
+    #
+    # if username != session['current_user'] or 'current_user' not in session:
+    #     return redirect('/')
+    # else:
+    #
+    #     return render_template('content.html')
+    try:
+        if username == session['current_user']:
+            print(username)
+            print(session['current_user'])
+            print('valid')
+            # return redirect('/')
+            return render_template('content.html')
+    except KeyError as e:
+        print('KeyError')
+        return redirect(f"/users/{username}")
 
-    return render_template('content.html')
+    except TypeError as e:
+        print('TypeError')
+        return redirect(f"/users/{username}")
+
+    # with expect_exception(KeyError):
+    #     print('key error')
+    #     return redirect('/login')
+
+
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -40,6 +67,7 @@ def register():
     # handle integrity error
 
     if form.validate_on_submit():
+        print('form validated')
         username = form.username.data
         password = form.password.data
         email = form.email.data
@@ -56,12 +84,15 @@ def register():
 
         return redirect("/")
     else:
+        print('form invalidated')
+
         return render_template("register.html", form=form)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     '''Render login form and login returning user.'''
 
+    print('login called')
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -71,7 +102,7 @@ def login():
         verify_user = User.verify_login(username, password)
         if verify_user == True:
             session["current_user"] = username
-            return render_template("content.html", username=username)
+            return redirect(f'/users/{username}')
         elif verify_user == False:
             flash('Please enter a valid username and password.')
             return render_template("login.html", form=form)
