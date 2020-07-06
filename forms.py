@@ -1,5 +1,5 @@
 from wtforms import StringField, PasswordField
-from wtforms.validators import InputRequired, Length, URL, Email, Optional
+from wtforms.validators import InputRequired, Length, Email, Optional, URL
 from flask_wtf import FlaskForm
 
 # validators
@@ -11,7 +11,6 @@ len_50 = Length(max=50)
 url_validator = URL(message='Please provide valid URL')
 optional = Optional(strip_whitespace=True)
 
-
 class RegisterForm(FlaskForm):
     '''New user registration form.'''
 
@@ -21,5 +20,10 @@ class RegisterForm(FlaskForm):
     email = StringField("Email", validators=[required, email_validator])
     first_name = StringField("First Name", validators=[required, len_30])
     last_name = StringField("Last Name", validators=[required, len_30])
-    profile_photo = StringField('Profile Photo', validator=[optional, url_validator])
+    profile_photo = StringField('Profile Photo', validators=[url_validator, optional])
 
+class LoginForm(FlaskForm):
+    '''Returning user login form.'''
+
+    username = StringField("Username", validators=[required, len_20])
+    password = PasswordField("Password", validators=[required])
