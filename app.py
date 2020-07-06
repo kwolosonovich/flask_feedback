@@ -17,7 +17,7 @@ connect_db(app)
 db.drop_all()
 db.create_all()
 
-seed_database()
+# seed_database()
 
 @app.route("/")
 def welcome_page():
@@ -27,6 +27,7 @@ def welcome_page():
         return render_template("homepage.html")
 
     elif 'current_user' in session:
+        print(session['current_user'])
         return redirect(f"/users/{session['current_user']}")
 
 @app.route("/users/<username>")
@@ -38,17 +39,17 @@ def user_content(username):
         print('first if')
         return redirect('/logout')
 
-
     else:
         try:
-            print('in try')
-            if username == session['current_user']:
+            # print('in try')
+            # if username == session['current_user']:
                 # feedback = Feedback.user_feedback(username)
                 # user = User.user_info(username)
-                chirps = Feedback.query.get(1)
-                user = User.query.get(username)
+            print(username)
+            # chirps = Feedback.query.get(1)
+            user = User.query.get(username)
 
-                return render_template('content.html', chirps=chirps, user=user)
+            return render_template('content.html', user=user)
 
         except KeyError as e:
             print('KeyError')
@@ -57,6 +58,7 @@ def user_content(username):
 
         except TypeError as e:
             print('TypeError')
+            print(username)
             return redirect('/login')
 
 
@@ -78,19 +80,18 @@ def register():
             if len(profile_photo) == 0 or profile_photo is None:
                 profile_photo = User.default_image_url
 
-            new_user = User.create_account(username=username,
-                                           password=password,
-                                           email=email,
-                                           first_name=first_name,
-                                           last_name=last_name,
-                                           profile_photo=profile_photo)
+            User.create_account(username=username,
+                                password=password,
+                                email=email,
+                                first_name=first_name,
+                                last_name=last_name,
+                                profile_photo=profile_photo)
 
-            db.session.add(new_user)
             db.session.commit()
 
             session["current_user"] = username
 
-            return redirect(f"/users/{new_user.username}")
+            return redirect(f"/users/{username}")
 
         else:
             print('form invalidated')
@@ -104,18 +105,20 @@ def register():
 def login():
     '''Render login form and login returning user.'''
 
-    print('login called')
+    if "username" in session:
+        return redirect(f"/users/{session['username']}")
+
     form = LoginForm()
 
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
 
-        verify_user = User.verify_login(username, password)
+        verify_user = User.authenticate(username, password)
         if verify_user == True:
             session["current_user"] = username
             return redirect(f'/users/{username}')
-        elif verify_user == False:
+        else:
             flash('Please enter a valid username and password.')
             return render_template("login.html", form=form)
     else:

@@ -43,18 +43,20 @@ class User(db.Model):
         '''Create new user account.'''
 
         hashed = bcrypt.generate_password_hash(password)
-        password = hashed.decode('utf8')
+        password_utf8 = hashed.decode('utf8')
         new_user = cls(username=username,
-                       password=password,
+                       password=password_utf8,
                        email=email,
                        first_name=first_name,
                        last_name=last_name,
                        profile_photo=profile_photo)
 
+        db.session.add(new_user)
+
         return new_user
 
     @classmethod
-    def verify_login(cls, username, password):
+    def authenticate(cls, username, password):
         '''Verify a returning user's username and password.'''
 
         user = User.query.filter_by(username=username).first()

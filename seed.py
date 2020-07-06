@@ -5,7 +5,7 @@ def seed_database():
 # current user in database
 
     ava = User(username='ava',
-           password='ava',
+           password='ava_utf8',
            email='ava@gmail.com',
            first_name='ava',
            last_name='ava',
@@ -17,6 +17,5 @@ def seed_database():
                      content="test content",
                      username='ava')
 
-    print('ava called ')
     db.session.add(chirp)
     db.session.commit()
