@@ -6,11 +6,9 @@
 
     <h1>Flutter</h1>
 
-{#    <img src="https://image.flaticon.com/icons/svg/184/184970.svg" alt="">#}
-
     <div class="container feedback-section">
         <div class="row">
-            <div col col-9>
+            <div class="col-9">
                 {% for chirp in chirps %}
                 <div class="media">
 {#                  <img src="{{ user.profile_photo }}" class="align-self-start mr-3" alt="profile photo">#}
@@ -22,9 +20,9 @@
                 </div>
                 {% endfor %}
             </div>
-            <div col col-3>
-                <div class="card">
-                    <img class="card-img-top" src="{{ user.profile_photo }}" alt="profile photo">
+            <div class="col-3">
+                <div class="card mx-auto" style="width: 12rem">
+                    <img class="card-img-top w-75 mx-auto" src="{{ user.profile_photo }}" alt="profile photo">
                     <div class="card-body">
                         <h4 class="card-title">{{ user.username }}</h4>
                         <h6>{{ user.first_name }} {{ user.last_name }}</h6>
