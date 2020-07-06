@@ -8,8 +8,10 @@ email_validator = Email(message='Please provide a valid email address')
 len_20 = Length(max=20)
 len_30 = Length(max=30)
 len_50 = Length(max=50)
+len_300 = Length(max=300)
 url_validator = URL(message='Please provide valid URL')
 optional = Optional(strip_whitespace=True)
+
 
 class RegisterForm(FlaskForm):
     '''New user registration form.'''
@@ -27,3 +29,11 @@ class LoginForm(FlaskForm):
 
     username = StringField("Username", validators=[required, len_20])
     password = PasswordField("Password", validators=[required])
+
+
+class ChirpForm(FlaskForm):
+    '''Create a new chirp form'''
+
+    title = StringField("Title", validators=[required, len_50])
+    content = StringField("Content", validators=[required, len_300])
+
