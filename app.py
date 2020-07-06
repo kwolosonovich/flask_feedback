@@ -22,39 +22,30 @@ def welcome_page():
         return render_template("homepage.html")
 
     elif 'current_user' in session:
-        username = session['current_user']
-        return redirect(f'/users/{username}')
+        return redirect(f"/users/{session['current_user']}")
 
 @app.route("/users/<username>")
 def user_content(username):
-    if request.method == "GET":
-        return redirect("/")
     '''Render content for current user'''
-    #
-    # if username != session['current_user'] or 'current_user' not in session:
-    #     return redirect('/')
-    # else:
-    #
-    #     return render_template('content.html')
-    try:
-        if username == session['current_user']:
-            print(username)
-            print(session['current_user'])
-            print('valid')
-            # return redirect('/')
-            return render_template('content.html')
-    except KeyError as e:
-        print('KeyError')
-        return redirect(f"/users/{username}")
 
-    except TypeError as e:
-        print('TypeError')
-        return redirect(f"/users/{username}")
+    if "current_user" not in session or username != session['current_user']:
+        flash("Page not found")
+        return redirect('/')
 
-    # with expect_exception(KeyError):
-    #     print('key error')
-    #     return redirect('/login')
+    else:
+        try:
+            if username == session['current_user']:
+                print(username)
+                print(session['current_user'])
+                print('valid')
+                return render_template('content.html')
+        except KeyError as e:
+            print('KeyError')
+            # return redirect(f"/users/{session['current_user']}")
 
+        except TypeError as e:
+            print('TypeError')
+            # return redirect(f"/users/{session['current_user']}")
 
 
 
@@ -82,10 +73,9 @@ def register():
 
         session["current_user"] = username
 
-        return redirect("/")
+        return redirect(f"/users/{new_user.username}")
     else:
         print('form invalidated')
-
         return render_template("register.html", form=form)
 
 @app.route("/login", methods=["GET", "POST"])
