@@ -17,7 +17,19 @@ db.create_all()
 def welcome_page():
     '''Render welcome page.'''
 
-    return render_template("homepage.html")
+    if 'current_user' not in session:
+        return render_template("homepage.html")
+
+    elif 'current_user' in session:
+        username = session['current_user']
+        return redirect(f'/users/{username}')
+
+@app.route("/users/<username>")
+def user_content(username):
+    '''Render content for current user'''
+
+    return render_template('content.html')
+
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
