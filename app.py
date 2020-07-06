@@ -35,22 +35,29 @@ def user_content(username):
 
     if "current_user" not in session or username != session['current_user']:
         flash("Page not found")
-        return redirect('/')
+        print('first if')
+        return redirect('/logout')
+
 
     else:
         try:
+            print('in try')
             if username == session['current_user']:
-                feedback = Feedback.user_feedback(username)
-                user = User.user_info(username)
-                return render_template('content.html', feedback=feedback, user=user)
+                # feedback = Feedback.user_feedback(username)
+                # user = User.user_info(username)
+                chirps = Feedback.query.get(1)
+                user = User.query.get(username)
+
+                return render_template('content.html', chirps=chirps, user=user)
 
         except KeyError as e:
             print('KeyError')
-            return redirect(f"/users/{session['current_user']}")
+            # return redirect(f"/users/{session['current_user']}")
+            return redirect('/login')
 
         except TypeError as e:
             print('TypeError')
-            return redirect(f"/users/{session['current_user']}")
+            return redirect('/login')
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -125,3 +132,17 @@ def logout():
 
     else:
         return render_template("logout.html")
+
+
+@app.route("/user/<username>/delete", methods=["POST"])
+def delete_user(username):
+    '''Delete user and user feedback from dataase and session'''
+
+    r = request.forms.get('first')
+    form = request.forms.get()
+    print(r)
+    print(form)
+    flash("Account Deleted")
+
+    return render_template("logout.html")
+

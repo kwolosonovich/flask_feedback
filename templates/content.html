@@ -9,17 +9,32 @@
 {#    <img src="https://image.flaticon.com/icons/svg/184/184970.svg" alt="">#}
 
     <div class="container feedback-section">
-
-        {% for chirp in feedback %}
-        <div class="media">
-          <img src="{{ user.profile_photo }}" class="align-self-start mr-3" alt="profile photo">
-          <div class="media-body">
-            <h4 class="mt-0">{{ chirp.title }}</h4>
-            <h5 class="mt-0">{{ chirp.username }}</h5>
-            <p>{{ chirp.content }}</p>
-          </div>
+        <div class="row">
+            <div col col-9>
+                {% for chirp in chirps %}
+                <div class="media">
+{#                  <img src="{{ user.profile_photo }}" class="align-self-start mr-3" alt="profile photo">#}
+                  <div class="media-body">
+                    <h4 class="mt-0">{{ chirp.title }}</h4>
+                    <h5 class="mt-0">{{ chirp.username }}</h5>
+                    <p>{{ chirp.content }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div col col-3>
+                <div class="card">
+                    <img class="card-img-top" src="{{ user.profile_photo }}" alt="profile photo">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ user.username }}</h4>
+                        <h6>{{ user.first_name }} {{ user.last_name }}</h6>
+                        <a href="/users/{{ user.username }}/edit" class="btn btn-primary">Edit</a>
+                        <a href="/users/{{ user.username }}/delete" class="btn btn-primary">Delete</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endfor %}
     </div>
 
 {% endblock %}

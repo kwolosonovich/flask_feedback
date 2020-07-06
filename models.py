@@ -20,9 +20,11 @@ class User(db.Model):
     __tablename__ = "users"
 
     username = db.Column(db.String(20),
-                   primary_key=True)
+                         primary_key=True,
+                         nullable=False,
+                         unique=True)
     password = db.Column(db.String,
-                         default=False)
+                         nullable=False)
     email = db.Column(db.String(50),
                       nullable=False,
                       unique=True)
@@ -32,6 +34,9 @@ class User(db.Model):
                            nullable=False)
     profile_photo = db.Column(db.String,
                               nullable=False)
+
+    feedback = db.relationship("Feedback", backref="user", cascade="all,delete")
+
 
     @classmethod
     def create_account(cls, username, password, email, first_name, last_name, profile_photo):
@@ -69,8 +74,7 @@ class Feedback(db.Model):
     __tablename__ = "feedback"
 
     id = db.Column(db.Integer,
-                   primary_key=True,
-                   autoincrement=True)
+                   primary_key=True)
     title = db.Column(db.String(100),
                       nullable=False)
     content = db.Column(db.String,
