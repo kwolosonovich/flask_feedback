@@ -6,6 +6,20 @@
 
     <h1>Register</h1>
 
+    <div class="container">
+        <form action="/register" method="POST">
+            <div class="row row-cols-sm-1 row-cols-md-2">
+                {{ form.hidden_tag() }}
 
+                {% for field in form if field.widget.input_type != 'hidden' %}
+                    <div class="col">
+                        {{ field.label }}
+                        {{ field(class_="form-control") }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="btn submit-btn btn-info" type="submit">Create Profile</button>
+        </form>
+    </div>
 
 {% endblock %}

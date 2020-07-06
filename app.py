@@ -24,6 +24,9 @@ def register():
     '''Render register form and create new user.'''
 
     form = RegisterForm()
+
+    # handle integrity error
+
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
@@ -45,7 +48,7 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    '''Render login form and lopin returning user.'''
+    '''Render login form and login returning user.'''
 
     form = LoginForm()
 
@@ -59,6 +62,18 @@ def login():
             return render_template("content.html", username=username)
         elif verify_user == False:
             flash('Please enter a valid username and password.')
-            return render_template("login.html")
+            return render_template("login.html", form=form)
     else:
-        return render_template("login.html")
+        return render_template("login.html", form=form)
+
+
+@app.route("/logout", methods=["GET", "POST"])
+def logout():
+    '''Render user logout form and remove user from session.'''
+
+    if request.method == 'POST':
+        session.pop("current_user")
+        return redirect("/")
+
+    else:
+        return render_template("logout.html")
