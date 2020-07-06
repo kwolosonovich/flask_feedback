@@ -14,6 +14,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///flutter"
 
 connect_db(app)
 
+db.drop_all()
+db.create_all()
+
 seed_database()
 
 @app.route("/")
@@ -41,15 +44,13 @@ def user_content(username):
                 user = User.user_info(username)
                 return render_template('content.html', feedback=feedback, user=user)
 
-
         except KeyError as e:
             print('KeyError')
-            # return redirect(f"/users/{session['current_user']}")
+            return redirect(f"/users/{session['current_user']}")
 
         except TypeError as e:
             print('TypeError')
-            # return redirect(f"/users/{session['current_user']}")
-
+            return redirect(f"/users/{session['current_user']}")
 
 
 @app.route("/register", methods=["POST", "GET"])

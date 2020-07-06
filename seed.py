@@ -2,9 +2,6 @@ from app import db
 from models import User, Feedback
 
 def seed_database():
-    db.drop_all()
-    db.create_all()
-
     # current user in database
 
     ava = User(username='ava',
