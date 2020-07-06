@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, session, flash, request
 from models import db, connect_db, User
 from forms import RegisterForm, LoginForm
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 
@@ -55,27 +56,31 @@ def register():
 
     form = RegisterForm()
 
-    # handle integrity error
+    try:
+        if form.validate_on_submit():
+            print('form validated')
+            username = form.username.data
+            password = form.password.data
+            email = form.email.data
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            profile_photo = form.profile_photo.data
 
-    if form.validate_on_submit():
-        print('form validated')
-        username = form.username.data
-        password = form.password.data
-        email = form.email.data
-        first_name = form.first_name.data
-        last_name = form.last_name.data
-        profile_photo = form.profile_photo.data
+            new_user = User.create_account(username, password, email, first_name, last_name, profile_photo)
 
-        new_user = User.create_account(username, password, email, first_name, last_name, profile_photo)
+            db.session.add(new_user)
+            db.session.commit()
 
-        db.session.add(new_user)
-        db.session.commit()
+            session["current_user"] = username
 
-        session["current_user"] = username
+            return redirect(f"/users/{new_user.username}")
 
-        return redirect(f"/users/{new_user.username}")
-    else:
-        print('form invalidated')
+        else:
+            print('form invalidated')
+            return render_template("register.html", form=form)
+
+    except IntegrityError as e:
+        flash('Sorry that username is already taken. Please enter a new username')
         return render_template("register.html", form=form)
 
 @app.route("/login", methods=["GET", "POST"])
