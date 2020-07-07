@@ -23,7 +23,7 @@ db.create_all()
 def welcome_page():
     '''Render welcome page.'''
 
-    if 'current_user' in session and 'current_user' == User.query.get('current_user') == True:
+    if 'current_user' in session and 'current_user' == User.query.get('current_user'):
         return redirect(f"/users/{session['current_user']}")
 
     else:
@@ -73,8 +73,8 @@ def register():
 def login():
     '''Render login form and login returning user.'''
 
-    if "username" in session:
-        return redirect(f"/users/{session['username']}")
+    if 'current_user' in session and 'current_user' == User.query.get('current_user'):
+        return redirect(f"/users/{session['current_user']}")
 
     form = LoginForm()
 
@@ -101,29 +101,19 @@ def user_content(username):
 
         return redirect('/login')
 
-    else:
-        try:
-            # print('in try')
-            # if username == session['current_user']:
-                # feedback = Feedback.user_feedback(username)
-                # user = User.user_info(username)
-            print(username)
-            # chirps = Feedback.query.get(1)
-            user = User.query.get(username)
-            return render_template('content.html', user=user)
+    try:
+        user = User.query.get(username)
+        return render_template('content.html', user=user)
 
-        except KeyError as e:
-            print('KeyError')
-            # return redirect(f"/users/{session['current_user']}")
-            return redirect('/login')
+    except KeyError as e:
+        print('KeyError')
+        # return redirect(f"/users/{session['current_user']}")
+        return redirect('/login')
 
-        except TypeError as e:
-            print('TypeError')
-            print(username)
-            return redirect('/login')
-
-
-
+    except TypeError as e:
+        print('TypeError')
+        print(username)
+        return redirect('/login')
 
 
 @app.route("/logout", methods=["GET", "POST"])
@@ -181,20 +171,53 @@ def add_chrip(username):
     return render_template("chirp-form.html", username=username, form=form)
 
 
+@app.route("/chirp/<feedback_id>/update", methods=['GET', 'POST'])
+def edit_chirp(feedback_id):
+    '''Render edit form and save changes on POST request.'''
+
+    feedback = Feedback.query.get(feedback_id)
+
+    if "current_user" not in session or feedback.username != session['current_user']:
+        return redirect("/login")
+
+    form = ChirpForm(obj=feedback)
+
+    if form.validate_on_submit():
+        feedback.title = form.title.data
+        feedback.content = form.content.data
+
+        db.session.commit()
+
+        user = User.query.get(session["current_user"])
+
+        # return render_template(f"/users/{session['current_user']}")
+        return render_template("content.html", user=user)
+
+    return render_template("update.html", form=form, feedback=feedback)
+
+
 @app.route("/chirp/<feedback_id>/delete", methods=["GET", "POST"])
 def delete_chirp(feedback_id):
     '''Delete chirp from page and database.'''
 
     feedback = Feedback.query.get(feedback_id)
 
+    print(feedback)
+    print(session)
     if "current_user" not in session:
         return redirect("/")
 
     if request.method == 'POST':
         db.session.delete(feedback)
         db.session.commit()
-        return redirect(f'/users/{feedback.username}')
+
+        user = User.query.get(session["current_user"])
+
+        return render_template("content.html", user=user)
 
     keyword = "Delete Chirp?"
     route = f"/chirp/{ feedback_id }/delete"
     return render_template('delete.html', keyword=keyword, route=route)
+
+
+app.run(debug=True)
