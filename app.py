@@ -23,42 +23,11 @@ db.create_all()
 def welcome_page():
     '''Render welcome page.'''
 
-    if 'current_user' not in session:
-        return render_template("homepage.html")
-
-    elif 'current_user' in session:
-        print(session['current_user'])
+    if 'current_user' in session and 'current_user' == User.query.get('current_user') == True:
         return redirect(f"/users/{session['current_user']}")
 
-@app.route("/users/<username>")
-def user_content(username):
-    '''Render content for current user'''
-
-    if "current_user" not in session or username != session['current_user']:
-        flash("Page not found")
-        print('first if')
-        return redirect('/logout')
-
     else:
-        try:
-            # print('in try')
-            # if username == session['current_user']:
-                # feedback = Feedback.user_feedback(username)
-                # user = User.user_info(username)
-            print(username)
-            # chirps = Feedback.query.get(1)
-            user = User.query.get(username)
-            return render_template('content.html', user=user)
-
-        except KeyError as e:
-            print('KeyError')
-            # return redirect(f"/users/{session['current_user']}")
-            return redirect('/login')
-
-        except TypeError as e:
-            print('TypeError')
-            print(username)
-            return redirect('/login')
+        return render_template("homepage.html")
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -124,6 +93,39 @@ def login():
         return render_template("login.html", form=form)
 
 
+@app.route("/users/<username>")
+def user_content(username):
+    '''Render content for current user'''
+
+    if "current_user" not in session or username != session['current_user']:
+
+        return redirect('/login')
+
+    else:
+        try:
+            # print('in try')
+            # if username == session['current_user']:
+                # feedback = Feedback.user_feedback(username)
+                # user = User.user_info(username)
+            print(username)
+            # chirps = Feedback.query.get(1)
+            user = User.query.get(username)
+            return render_template('content.html', user=user)
+
+        except KeyError as e:
+            print('KeyError')
+            # return redirect(f"/users/{session['current_user']}")
+            return redirect('/login')
+
+        except TypeError as e:
+            print('TypeError')
+            print(username)
+            return redirect('/login')
+
+
+
+
+
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     '''Render user logout form and remove user from session.'''
@@ -136,20 +138,26 @@ def logout():
         return render_template("logout.html")
 
 
-@app.route("/users/<username>/delete", methods=["POST"])
+@app.route("/users/<username>/delete", methods=["GET", "POST"])
 def delete_user(username):
     '''Delete user and user feedback from dataase and session'''
 
-    r = request.forms.get('first')
-    form = request.forms.get()
-    print(r)
-    print(form)
-    flash("Account Deleted")
+    user = User.query.get(username)
 
-    return render_template("logout.html")
+    if "current_user" not in session or username != session['current_user']:
+        return redirect("/")
+
+    if request.method == 'POST':
+        db.session.delete(user)
+        db.session.commit()
+        return redirect('/login')
+
+    keyword = "Delete Account?"
+    route = f"/users/{ username }/delete"
+    return render_template('delete.html', keyword=keyword, route=route)
 
 
-@app.route("/users/<username>/feedback/add", methods=['GET', 'POST'])
+@app.route("/users/<username>/chirp/add", methods=['GET', 'POST'])
 def add_chrip(username):
     '''Render new chirp form and create new chirp'''
 
@@ -171,3 +179,22 @@ def add_chrip(username):
     print('invalid or GET')
     print(form)
     return render_template("chirp-form.html", username=username, form=form)
+
+
+@app.route("/chirp/<feedback_id>/delete", methods=["GET", "POST"])
+def delete_chirp(feedback_id):
+    '''Delete chirp from page and database.'''
+
+    feedback = Feedback.query.get(feedback_id)
+
+    if "current_user" not in session:
+        return redirect("/")
+
+    if request.method == 'POST':
+        db.session.delete(feedback)
+        db.session.commit()
+        return redirect(f'/users/{feedback.username}')
+
+    keyword = "Delete Chirp?"
+    route = f"/chirp/{ feedback_id }/delete"
+    return render_template('delete.html', keyword=keyword, route=route)

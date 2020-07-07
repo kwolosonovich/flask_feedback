@@ -32,8 +32,7 @@ class LoginForm(FlaskForm):
 
 
 class ChirpForm(FlaskForm):
-    '''Create a new chirp form'''
+    '''Create a new chirp form.'''
 
     title = StringField("Title", validators=[required, len_50])
     content = StringField("Content", validators=[required, len_300])
-

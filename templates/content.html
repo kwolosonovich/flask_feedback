@@ -10,12 +10,13 @@
         <div class="row">
             <div class="col-9">
                 {% for feedback in user.feedback %}
-                <div class="media">
+                <div class="media mt-2 mb-2">
                   <img src="{{ user.profile_photo }}" class="align-self-start mr-3 thumbnail w-auth" style="width: 80px" alt="profile photo">
                   <div class="media-body">
                     <h4 class="mt-0">{{ feedback.title }}</h4>
-                    <h5 class="mt-0">{{ feedback.username }}</h5>
-                    <p>{{ feedback.content }}</p>
+                    <p class="mt-0">{{ feedback.username }}</p>
+                      <p class="mb-0">{{ feedback.content }}</p>
+                      <a href="/chirp/{{ feedback.id }}/delete" class="text-warning mt-0 mb-1"><i>Delete</i></a>
                   </div>
                 </div>
                 {% endfor %}
@@ -36,7 +37,7 @@
         </div>
     </div>
     <div class="container feedback-section mt-5">
-        <a href="/users/{{ user.username }}/feedback/add" class="btn btn-primary">Add a Chirp</a>
+        <a href="/users/{{ user.username }}/chirp/add" class="btn btn-primary">Add a Chirp</a>
     </div>
 
 

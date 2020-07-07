@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% block title %} <h1>{{ keyword }} </h1>{% endblock %}
+
+    <form action="{{ route }}" method="POST">
+
+        <a href="/" class="btn submit-btn btn-info">Cancel</a>
+        <button class="btn submit-btn btn-info" type="submit">Yes</button>
+
+    </form>
+
+{% endblock %}
