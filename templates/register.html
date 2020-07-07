@@ -9,9 +9,9 @@
     <div class="container">
         <form action="/register" method="POST">
             <div class="row row-cols-sm-1 row-cols-md-2">
-                {{ form.hidden_tag() }}
+                {{ chirp_form.hidden_tag() }}
 
-                {% for field in form if field.widget.input_type != 'hidden' %}
+                {% for field in chirp_form if field.widget.input_type != 'hidden' %}
                     <div class="col">
                         {{ field.label }}
                         {{ field(class_="form-control") }}

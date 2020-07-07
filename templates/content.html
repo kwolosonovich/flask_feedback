@@ -26,13 +26,18 @@
                     <div class="card-body">
                         <h4 class="card-title">{{ user.username }}</h4>
                         <h6>{{ user.first_name }} {{ user.last_name }}</h6>
-                        <a href="/users/{{ user.username }}/edit" class="btn btn-primary">Edit</a>
-                        <a href="/users/{{ user.username }}/delete" class="btn btn-primary">Delete</a>
+                        <form>
+                            <a href="/users/{{ user.username }}/edit" class="btn btn-primary">Edit</a>
+                            <a href="/users/{{ user.username }}/delete" class="btn btn-primary">Delete</a>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="container feedback-section mt-5">
+        <a href="/users/{{ user.username }}/feedback/add" class="btn btn-primary">Add a Chirp</a>
+    </div>
+
 
 {% endblock %}

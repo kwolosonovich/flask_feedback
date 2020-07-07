@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, session, flash, request
 from models import db, connect_db, User, Feedback
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, ChirpForm
 from sqlalchemy.exc import IntegrityError
 from seed import seed_database
 
@@ -48,8 +48,8 @@ def user_content(username):
             print(username)
             # chirps = Feedback.query.get(1)
             user = User.query.get(username)
-
-            return render_template('content.html', user=user)
+            chirp_form = ChirpForm()
+            return render_template('content.html', user=user, chirp_form=chirp_form)
 
         except KeyError as e:
             print('KeyError')
@@ -137,7 +137,7 @@ def logout():
         return render_template("logout.html")
 
 
-@app.route("/user/<username>/delete", methods=["POST"])
+@app.route("/users/<username>/delete", methods=["POST"])
 def delete_user(username):
     '''Delete user and user feedback from dataase and session'''
 
@@ -149,3 +149,24 @@ def delete_user(username):
 
     return render_template("logout.html")
 
+
+@app.route("/users/<username>/feedback/add", methods=['GET', 'POST'])
+def add_chrip(username):
+    '''Render new chirp form and create new chirp'''
+
+    form = ChirpForm()
+
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+
+        new_chirp = Feedback(title, content)
+
+        db.session.add(new_chirp)
+        db.session.commit()
+
+        return redirect(f"/users/{username}")
+
+    print('invalid or GET')
+
+    return render_template("logout.html", username=username, form=form)
