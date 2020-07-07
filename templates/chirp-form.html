@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 
-
 {% block title %} Post a Chirp {% endblock %}
 
-{% block chirp %}
+{% block content %}
 
     <div class="container">
-        <h1>Post a Chirp</h1>
         <form action="/users/{{ username }}/feedback/add" method="POST">
-            <div class="row row-cols-sm-1 row-cols-md-2">
+            <div class="row row-cols-sm-1 row-cols-md-1">
                 {{ form.hidden_tag() }}
 
                 {% for field in form if field.widget.input_type != 'hidden' %}
@@ -18,7 +16,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <a href="/users/{{ user.username }}" class="btn btn-primary">Cancel</a>
+            <a href="/users/{{ username }}" class="btn btn-primary">Cancel</a>
             <button class="btn submit-btn btn-info" type="submit">Post</button>
         </form>
     </div>

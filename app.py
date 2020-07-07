@@ -160,13 +160,15 @@ def add_chrip(username):
         title = form.title.data
         content = form.content.data
 
-        new_chirp = Feedback(title, content)
+        feedback = Feedback(title=title,
+                            content=content,
+                            username=username)
 
-        db.session.add(new_chirp)
+        db.session.add(feedback)
         db.session.commit()
 
         return redirect(f"/users/{username}")
 
     print('invalid or GET')
-
-    return render_template("logout.html", username=username, form=form)
+    print(form)
+    return render_template("chirp-form.html", username=username, form=form)
