@@ -2,9 +2,13 @@
 
 {% block title %} Post{% endblock %}
 
+{% block nav %}
+{% endblock %}
+
 {% block content %}
 
-    <div class="container w-75">
+    <div class="container w-75 text-secondary">
+
         <h1>Post a Chirp</h1>
         <form action="/users/{{ username }}/chirp/add" method="POST">
             <div class="row row-cols-sm-1 row-cols-md-1">

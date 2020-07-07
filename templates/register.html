@@ -2,11 +2,14 @@
 
 {% block title %} Register {% endblock %}
 
+{% block nav %}
+{% endblock %}
+
 {% block content %}
 
-    <div class="container">
+    <div class="container text-secondary w-75">
 
-        <h1>Register</h1>
+        <h1 class="text-success">Register</h1>
 
         <form action="/register" method="POST">
             <div class="row row-cols-sm-1 row-cols-md-2">
@@ -15,7 +18,7 @@
                 {% for field in form if field.widget.input_type != 'hidden' %}
                     <div class="col">
                         {{ field.label }}
-                        {{ field(class_="form-control") }}
+                        {{ field(class_="form-control form-text border-light") }}
                     </div>
                 {% endfor %}
             </div>

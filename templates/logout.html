@@ -2,14 +2,21 @@
 
 {% block title %} Logout {% endblock %}
 
+{% block nav %}
+{% endblock %}
+
 {% block content %}
 
-    <h1>Logout</h1>
+    <div class="container text-secondary w-75">
 
-    <form action="/logout" method="POST">
-        <h4>Are you sure you want to logout?</h4>
-        <a href="/users/{{ username }}" class="btn submit-btn btn-outline-secondary">Cancel</a>
-        <button class="btn submit-btn btn-info" type="submit">Yes</button>
-    </form>
+        <h1 class="text-success">Logout</h1>
+
+        <form action="/logout" method="POST">
+            <h4 class="mb-3 mt-5">Are you sure you want to logout?</h4>
+            <a href="/users/{{ username }}" class="btn submit-btn btn-outline-secondary">Cancel</a>
+            <button class="btn submit-btn btn-info" type="submit">Yes</button>
+        </form>
+
+    </div>
 
 {% endblock %}

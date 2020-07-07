@@ -4,18 +4,18 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="container text-secondary w-75">
 
-        <h1>Login</h1>
+        <h1 class="text-success">Login</h1>
 
-        <form method="POST">
+        <form method="POST" class="text-secondary">
             <div class="row row-cols-sm-1 row-cols-md-2">
                 {{ form.hidden_tag() }}
 
                 {% for field in form if field.widget.input_type != 'hidden' %}
                     <div class="col">
                         {{ field.label }}
-                        {{ field(class_="form-control") }}
+                        {{ field(class_="form-control form-text border-light") }}
                     </div>
                 {% endfor %}
             </div>

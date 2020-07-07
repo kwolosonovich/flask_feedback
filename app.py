@@ -62,7 +62,7 @@ def register():
             return redirect(f"/users/{username}")
 
         else:
-            print('form invalidated')
+            flash('Sorry that username is already taken. Please enter a new username')
             return render_template("register.html", form=form)
 
     except IntegrityError as e:

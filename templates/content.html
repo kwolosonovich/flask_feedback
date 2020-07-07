@@ -14,47 +14,52 @@
 
 {% block content %}
 
-    <div class="container feedback-section mt-5">
+    <div class="container container-fluid feedback-section mt-5">
         <div class="row">
-            <div class="col-3">
-                <div class="card mx-auto" style="width: 12rem">
+            <div class="col-sm-12 col-md-3">
+                <div class="card mb-3 mx-auto bg-white border-info" style="max-width: 12rem">
                     <img class="card-img-top w-75 mx-auto" src="{{ user.profile_photo }}" alt="profile photo">
-                    <div class="card-body bg-white">
+                    <div class="card-body bg-light">
                         <h4 class="card-title">{{ user.username }}</h4>
                         <h6>{{ user.first_name }} {{ user.last_name }}</h6>
                         <form>
                             <a href="/users/{{ user.username }}/chirp/add" class="btn btn-info w-100 mt-2">Chirp</a>
-                            <a href="/users/{{ user.username }}/delete" class="btn btn-outline-secondary w-100 mt-2">Delete</a>
+                            <a href="/users/{{ user.username }}/delete" class="btn btn-outline-white w-100 mt-2"><i>Delete</i></a>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-9">
-                <h1 class="mb-5">Latest Chirps from {{ user.username }}</h1>
-
-                    {% for feedback in user.feedback | sort(attribute="id", reverse=True) %}
-
-                        <div class="card mb-3 mt-3" style="max-width: 40rem">
-                            <div class="row no-gutters">
-                                <div class="col-md-3 mx-auto">
-                                    <img src="{{ user.profile_photo }}" class="mt-3 ml-5" style="width: 80px" alt="profile photo">
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="card-body text-left">
-                                        <h4 class="card-title">{{ feedback.title }}</h4>
-                                        <p class="mt-0">{{ feedback.username }}</p>
-                                        <p class="card-text mb-0">{{ feedback.content }}</p>
-                                        <a href="/chirp/{{ feedback.id }}/update" class="card-text text-warning mt-0 mb-1"><i>Update</i></a>
-                                        <a href="/chirp/{{ feedback.id }}/delete" class="card-text text-danger mt-0 mb-1"><i>Delete</i></a>
+            <div class="col-sm-12 col-md-9 mr-0 pr-0">
+                <div class="ml-5">
+                    <h1 class="mb-5 text-success">Latest Chirps from {{ user.username }}</h1>
+                </div>
+                {% for feedback in user.feedback | sort(attribute="id", reverse=True) %}
+                    <div class="card mb-3 mt-3 border-info ml-5" style="max-width: 35rem">
+                        <div class="row no-gutters">
+                            <div class="col-md-3 mx-auto bg-white">
+                                <img src="{{ user.profile_photo }}" class="rounded ml-auto mr-auto mt-3 d-block"
+                                     style="width: 80px" alt="profile photo">
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body text-left bg-white text-secondary">
+                                    <h4 class="card-title">{{ feedback.title }}</h4>
+                                    <p class="mt-0">{{ feedback.username }}</p>
+                                    <p class="card-text mb-0">{{ feedback.content }}</p>
+                                    <div class="text-right">
+                                        <a href="/chirp/{{ feedback.id }}/update"
+                                           class="card-text text-light mt-0 mb-1 mr-3"><i>Update</i></a>
+                                        <a href="/chirp/{{ feedback.id }}/delete"
+                                           class="card-text text-light mt-0 mb-1"><i>Delete</i></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
+                {% endfor %}
 
-                </div>
             </div>
         </div>
+    </div>
     </div>
 
 {% endblock %}
