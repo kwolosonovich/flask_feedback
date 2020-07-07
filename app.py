@@ -188,10 +188,7 @@ def edit_chirp(feedback_id):
 
         db.session.commit()
 
-        user = User.query.get(session["current_user"])
-
-        # return render_template(f"/users/{session['current_user']}")
-        return render_template("content.html", user=user)
+        return redirect(f"/users/{session['current_user']}")
 
     return render_template("update.html", form=form, feedback=feedback)
 
