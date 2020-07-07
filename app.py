@@ -107,7 +107,6 @@ def user_content(username):
 
     except KeyError as e:
         print('KeyError')
-        # return redirect(f"/users/{session['current_user']}")
         return redirect('/login')
 
     except TypeError as e:
@@ -140,7 +139,7 @@ def delete_user(username):
     if request.method == 'POST':
         db.session.delete(user)
         db.session.commit()
-        return redirect('/login')
+        return redirect('/')
 
     keyword = "Delete Account?"
     route = f"/users/{ username }/delete"
