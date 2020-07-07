@@ -32,7 +32,7 @@
             <div class="col-9">
                 <h1 class="mb-5">Latest Chirps from {{ user.username }}</h1>
 
-                    {% for feedback in user.feedback %}
+                    {% for feedback in user.feedback | sort(attribute="id", reverse=True) %}
 
                         <div class="card mb-3 mt-3" style="max-width: 40rem">
                             <div class="row no-gutters">
