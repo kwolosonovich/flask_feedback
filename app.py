@@ -144,7 +144,7 @@ def delete_user(username):
 
     keyword = "Delete Account?"
     route = f"/users/{ username }/delete"
-    return render_template('delete.html', keyword=keyword, route=route)
+    return render_template('delete.html', keyword=keyword, route=route, username=username)
 
 
 @app.route("/users/<username>/chirp/add", methods=['GET', 'POST'])
