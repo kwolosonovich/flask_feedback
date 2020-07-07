@@ -201,6 +201,9 @@ def delete_chirp(feedback_id):
 
     print(feedback)
     print(session)
+
+    user = User.query.get(session["current_user"])
+
     if "current_user" not in session:
         return redirect("/")
 
@@ -208,13 +211,11 @@ def delete_chirp(feedback_id):
         db.session.delete(feedback)
         db.session.commit()
 
-        user = User.query.get(session["current_user"])
-
         return render_template("content.html", user=user)
 
     keyword = "Delete Chirp?"
     route = f"/chirp/{ feedback_id }/delete"
-    return render_template('delete.html', keyword=keyword, route=route)
+    return render_template('delete.html', keyword=keyword, route=route, username=user.username)
 
 
 app.run(debug=True)

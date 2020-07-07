@@ -6,46 +6,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 {#    <link rel="stylesheet" href="../static/styles.css">#}
 </head>
-<body>
+<body class="bg-light">
 
     <div class="jumbotron jumbotron-fluid">
   <div class="container text-right">
-    <h1 class="display-4">Flutter</h1>
-    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    <h1 class="display-4 text-info">Flutter</h1>
+{#    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>#}
   </div>
 </div>
 
     <div class="container nav-links mb-5">
         <ul class="nav nav-pills justify-content-end">
-            {% if 'current_user' not in session %}
-                <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" tabindex="-1" aria-disabled="true" href="/logout">Logout</a>
-                </li>
-            {% endif %}
 
-            {% if 'current_user' in session %}
-                <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" tabindex="-1" aria-disabled="true" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" tabindex="-1" aria-disabled="true" href="/register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
-            {% endif %}
+            {% block nav %}
+            {% endblock %}
+
         </ul>
     </div>
 
@@ -53,7 +28,7 @@
     <div class="container">
 
         {% for msg in get_flashed_messages() %}
-            <div class="alert alert-info">{{ msg }}</div>
+            <div class="alert m3">{{ msg }}</div>
         {% endfor %}
 
         {% block content %}
