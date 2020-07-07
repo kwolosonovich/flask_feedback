@@ -48,8 +48,7 @@ def user_content(username):
             print(username)
             # chirps = Feedback.query.get(1)
             user = User.query.get(username)
-            chirp_form = ChirpForm()
-            return render_template('content.html', user=user, chirp_form=chirp_form)
+            return render_template('content.html', user=user)
 
         except KeyError as e:
             print('KeyError')

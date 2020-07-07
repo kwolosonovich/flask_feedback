@@ -9,13 +9,13 @@
     <div class="container feedback-section mt-5">
         <div class="row">
             <div class="col-9">
-                {% for chirp in chirps %}
+                {% for feedback in user.feedback %}
                 <div class="media">
-{#                  <img src="{{ user.profile_photo }}" class="align-self-start mr-3" alt="profile photo">#}
+                  <img src="{{ user.profile_photo }}" class="align-self-start mr-3 thumbnail w-auth" style="width: 80px" alt="profile photo">
                   <div class="media-body">
-                    <h4 class="mt-0">{{ chirp.title }}</h4>
-                    <h5 class="mt-0">{{ chirp.username }}</h5>
-                    <p>{{ chirp.content }}</p>
+                    <h4 class="mt-0">{{ feedback.title }}</h4>
+                    <h5 class="mt-0">{{ feedback.username }}</h5>
+                    <p>{{ feedback.content }}</p>
                   </div>
                 </div>
                 {% endfor %}
