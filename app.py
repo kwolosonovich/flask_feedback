@@ -119,12 +119,13 @@ def user_content(username):
 def logout():
     '''Render user logout form and remove user from session.'''
 
+    username = session['current_user']
+
     if request.method == 'POST':
         session.pop("current_user")
         return redirect("/")
 
-    else:
-        return render_template("logout.html")
+    return render_template("logout.html", username=username)
 
 
 @app.route("/users/<username>/delete", methods=["GET", "POST"])
