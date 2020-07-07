@@ -28,7 +28,7 @@
 <div class="container">
 
     {% for msg in get_flashed_messages() %}
-        <div class="alert m3">{{ msg }}</div>
+        <div class="alert m3 text-primary w-75 mx-auto">{{ msg }}</div>
     {% endfor %}
 
     {% block content %}
