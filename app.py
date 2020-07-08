@@ -23,7 +23,7 @@ connect_db(app)
 db.drop_all()
 db.create_all()
 
-# seed_database()
+seed_database()
 
 @app.route("/")
 def welcome_page():
@@ -223,4 +223,4 @@ def delete_chirp(feedback_id):
     return render_template('delete.html', keyword=keyword, route=route, username=user.username)
 
 
-app.run(debug=False)
+app.run(debug=True)
