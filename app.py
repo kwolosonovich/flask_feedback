@@ -223,4 +223,4 @@ def delete_chirp(feedback_id):
     return render_template('delete.html', keyword=keyword, route=route, username=user.username)
 
 
-app.run(debug=True)
+app.run(debug=False)
