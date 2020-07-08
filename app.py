@@ -23,7 +23,7 @@ connect_db(app)
 db.drop_all()
 db.create_all()
 
-seed_database()
+# seed_database()
 
 @app.route("/")
 def welcome_page():
