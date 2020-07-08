@@ -1,15 +1,21 @@
+import os 
+
 from flask import Flask, render_template, redirect, session, flash, request
+from sqlalchemy.exc import IntegrityError
+
 from models import db, connect_db, User, Feedback
 from forms import RegisterForm, LoginForm, ChirpForm
-from sqlalchemy.exc import IntegrityError
 from seed import seed_database
+
 
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
-app.config["SECRET_KEY"] = "secret123"
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///flutter"
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'shh')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    'DATABASE_URL', 'postgres:///flask-heroku'
+)
 
 
 connect_db(app)
@@ -217,4 +223,4 @@ def delete_chirp(feedback_id):
     return render_template('delete.html', keyword=keyword, route=route, username=user.username)
 
 
-app.run(debug=True)
+app.run(debug=False)
