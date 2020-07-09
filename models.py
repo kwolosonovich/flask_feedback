@@ -15,7 +15,7 @@ def connect_db(app):
 class User(db.Model):
     '''Flutter user.'''
 
-    default_image_url = "https://image.flaticon.com/icons/svg/184/184970.svg"
+    default_image_url = "https://image.flaticon.com/icons/svg/92/92026.svg"
 
     __tablename__ = "users"
 
